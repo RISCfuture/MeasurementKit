@@ -11,7 +11,9 @@ struct RoundingTests {
 
   @Test("Rounding to a multiple keeps the receiver's unit")
   func roundingKeepsTheUnit() {
-    let rounded = Measurement(value: 4_520, unit: UnitLength.feet).rounded(toMultipleOf: hundredFeet)
+    let rounded = Measurement(value: 4_520, unit: UnitLength.feet).rounded(
+      toMultipleOf: hundredFeet
+    )
 
     #expect(rounded.value == 4_500)
     #expect(rounded.unit == .feet)
@@ -53,7 +55,8 @@ struct RoundingTests {
     let tooHigh = Measurement(value: 1, unit: UnitLength.kilometers)
 
     #expect(tooHigh.clamped(to: range).unit == .kilometers)
-    #expect(tooHigh.clamped(to: range).converted(to: .feet).value
-      .isApproximatelyEqual(to: 1_000, absoluteTolerance: 1e-6))
+    let clampedInFeet = tooHigh.clamped(to: range).converted(to: .feet).value
+
+    #expect(clampedInFeet.isApproximatelyEqual(to: 1_000, absoluteTolerance: 1e-6))
   }
 }

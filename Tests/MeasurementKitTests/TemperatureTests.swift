@@ -67,7 +67,9 @@ struct TemperatureTests {
   func celsiusAndKelvinAgree() {
     let tenCelsius = Measurement(value: 10, unit: UnitTemperatureDifference.celsius)
 
-    #expect(tenCelsius.converted(to: .kelvin).value
-      .isApproximatelyEqual(to: 10, absoluteTolerance: 1e-12))
+    #expect(
+      tenCelsius.converted(to: .kelvin).value
+        .isApproximatelyEqual(to: 10, absoluteTolerance: 1e-12)
+    )
   }
 }

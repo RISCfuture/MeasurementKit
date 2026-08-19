@@ -9,15 +9,6 @@ struct UnitPreservationTests {
 
   // MARK: - Coherent families
 
-  /// A set of units that measure each other coherently, so that one speed held for one duration
-  /// covers exactly one length.
-  private struct Family {
-    let name: String
-    let length: UnitLength
-    let duration: UnitDuration
-    let speed: UnitSpeed
-  }
-
   private static let families = [
     Family(name: "SI", length: .meters, duration: .seconds, speed: .metersPerSecond),
     Family(name: "nautical", length: .nauticalMiles, duration: .hours, speed: .knots),
@@ -175,5 +166,14 @@ struct UnitPreservationTests {
 
     #expect(time.value.isApproximatelyEqual(to: 10, absoluteTolerance: 1e-9))
     #expect(time.unit == .seconds)
+  }
+
+  /// A set of units that measure each other coherently, so that one speed held for one duration
+  /// covers exactly one length.
+  private struct Family {
+    let name: String
+    let length: UnitLength
+    let duration: UnitDuration
+    let speed: UnitSpeed
   }
 }

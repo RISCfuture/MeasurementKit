@@ -48,5 +48,5 @@ public final class UnitMassFlowRate: Dimension, ProportionalDimension, DerivedDi
     super.init(coder: coder)
   }
 
-  override public class func baseUnit() -> UnitMassFlowRate { .kilogramsPerSecond }
+  override public static func baseUnit() -> UnitMassFlowRate { .kilogramsPerSecond }
 }

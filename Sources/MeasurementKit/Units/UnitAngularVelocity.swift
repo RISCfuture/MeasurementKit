@@ -59,5 +59,5 @@ public final class UnitAngularVelocity: Dimension, ProportionalDimension, Derive
     super.init(coder: coder)
   }
 
-  override public class func baseUnit() -> UnitAngularVelocity { .degreesPerSecond }
+  override public static func baseUnit() -> UnitAngularVelocity { .degreesPerSecond }
 }

@@ -18,7 +18,8 @@ struct AccumulationTests {
   /// the first addition.
   @Test("Foundation's addition drifts to the base unit when the units differ")
   func foundationAdditionDrifts() {
-    let mixed = Measurement(value: 1, unit: UnitLength.feet) + Measurement(value: 1, unit: UnitLength.meters)
+    let mixed =
+      Measurement(value: 1, unit: UnitLength.feet) + Measurement(value: 1, unit: UnitLength.meters)
 
     #expect(mixed.unit == .meters)
     #expect(mixed.value.isApproximatelyEqual(to: 1.3048, absoluteTolerance: 1e-9))
@@ -39,7 +40,9 @@ struct AccumulationTests {
       Measurement(value: 1852, unit: UnitLength.meters)
     ]
 
-    #expect(mixed.sum(in: .nauticalMiles).value.isApproximatelyEqual(to: 2, absoluteTolerance: 1e-9))
+    #expect(
+      mixed.sum(in: .nauticalMiles).value.isApproximatelyEqual(to: 2, absoluteTolerance: 1e-9)
+    )
   }
 
   @Test("Totalling an empty sequence is zero in the requested unit")

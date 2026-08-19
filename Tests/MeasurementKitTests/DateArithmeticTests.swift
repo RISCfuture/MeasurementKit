@@ -13,8 +13,9 @@ struct DateArithmeticTests {
   func elapsedIsADuration() {
     let later = Date(timeIntervalSince1970: 90)
 
-    #expect(later.elapsed(since: epoch).converted(to: .minutes).value
-      .isApproximatelyEqual(to: 1.5, absoluteTolerance: 1e-12))
+    let minutes = later.elapsed(since: epoch).converted(to: .minutes).value
+
+    #expect(minutes.isApproximatelyEqual(to: 1.5, absoluteTolerance: 1e-12))
     #expect(epoch.elapsed(since: later).value < 0)
   }
 
@@ -53,7 +54,9 @@ struct DateArithmeticTests {
     let measurement = Measurement(value: 90, unit: UnitDuration.seconds)
 
     #expect(measurement.timeInterval == 90)
-    #expect(measurement.duration.measurement.value
-      .isApproximatelyEqual(to: 90, absoluteTolerance: 1e-9))
+    #expect(
+      measurement.duration.measurement.value
+        .isApproximatelyEqual(to: 90, absoluteTolerance: 1e-9)
+    )
   }
 }

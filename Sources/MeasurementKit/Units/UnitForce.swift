@@ -36,5 +36,5 @@ public final class UnitForce: Dimension, ProportionalDimension, @unchecked Senda
   /// Standard gravity in metres per second squared, as the standard defines it exactly.
   private static let standardGravity = 9.806_65
 
-  override public class func baseUnit() -> UnitForce { .newtons }
+  override public static func baseUnit() -> UnitForce { .newtons }
 }

@@ -29,5 +29,5 @@ public final class UnitTemperatureDifference: Dimension, ProportionalDimension, 
     converter: UnitConverterLinear(coefficient: 5.0 / 9.0)
   )
 
-  override public class func baseUnit() -> UnitTemperatureDifference { .kelvin }
+  override public static func baseUnit() -> UnitTemperatureDifference { .kelvin }
 }

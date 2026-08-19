@@ -30,5 +30,5 @@ public final class UnitSlope: Dimension, ProportionalDimension, @unchecked Senda
     )
   )
 
-  override public class func baseUnit() -> UnitSlope { .ratio }
+  override public static func baseUnit() -> UnitSlope { .ratio }
 }

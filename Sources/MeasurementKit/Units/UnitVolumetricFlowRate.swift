@@ -54,5 +54,5 @@ public final class UnitVolumetricFlowRate: Dimension, ProportionalDimension, Der
     super.init(coder: coder)
   }
 
-  override public class func baseUnit() -> UnitVolumetricFlowRate { .litersPerSecond }
+  override public static func baseUnit() -> UnitVolumetricFlowRate { .litersPerSecond }
 }

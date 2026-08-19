@@ -1,0 +1,96 @@
+# CI Matrix Policy
+#
+# Category B (tools-version 6.2 + older macOS):  macos-15 + 6.2, macos-26 + 6.2, macos-26 + 6.3
+#
+# tools-version is 6.2 because sindresorhus/Defaults 9.0.9 is, so 6.0 and 6.1 cannot resolve the
+# dependency graph at all and are not testable.
+#
+# When Swift 6.4 ships: add macos-26 + 6.4
+#
+# No Linux job. MeasurementKitUI needs SwiftUI and MeasurementKitLocation needs Core Location,
+# neither of which exists there, and `Measurement.FormatStyle` — which the core's affix recovery is
+# built on — is not implemented by swift-corelibs-foundation. Package.swift still defines the
+# Foundation-only core on Linux, so a Linux consumer gets it; it is simply not covered here.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Build and Test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            swift: "6.2"
+          - os: macos-26
+            swift: "6.2"
+          - os: macos-26
+            swift: "6.3"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: SwiftyLab/setup-swift@v1
+        with:
+          swift-version: ${{ matrix.swift }}
+      - name: Build
+        run: swift build -v
+      - name: Test
+        run: swift test -v
+  lint:
+    name: Run SwiftLint
+    runs-on: ubuntu-latest
+    container: ghcr.io/realm/swiftlint:latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run SwiftLint
+        run: swiftlint --strict
+  swift-format:
+    name: Run swift-format
+    runs-on: ubuntu-latest
+    container:
+      image: swift:latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download .swift-format config
+        run: |
+          apt-get update && apt-get install -y wget
+          wget -O .swift-format https://gist.githubusercontent.com/RISCfuture/e0c21afb7bd80a88d128a42bf40d2ecd/raw/.swift-format
+      - name: Run swift-format lint
+        run: swift format lint --strict -r .
+  documentation:
+    name: Build Documentation
+    # macOS, not Linux: MeasurementKitLocation, MeasurementKitUI and
+    # MeasurementKitDefaults need Core Location, SwiftUI and a platform Package.swift
+    # defines them on, none of which exist there.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: SwiftyLab/setup-swift@v1
+        with:
+          swift-version: "6.2"
+      # Throwaway output: this job proves DocC is warning-free, and Deploy Documentation
+      # is what publishes the archive to GitHub Pages.
+      - name: Build documentation
+        run: |
+          swift package \
+            --allow-writing-to-directory "$RUNNER_TEMP/docs" \
+            generate-documentation \
+            --target MeasurementKit \
+            --target MeasurementKitLocation \
+            --target MeasurementKitUI \
+            --target MeasurementKitDefaults \
+            --enable-experimental-combined-documentation \
+            --warnings-as-errors \
+            --output-path "$RUNNER_TEMP/docs"

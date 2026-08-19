@@ -9,8 +9,8 @@ struct CustomUnitTests {
 
   // MARK: - Slope
 
-  /// The symbol is the SI spelling for a ratio of like quantities. Naming it `m` — as one of the
-  /// apps this was extracted from did — collides with the metre wherever a slope is formatted.
+  /// The symbol is the SI spelling for a ratio of like quantities. Naming it `m` collides with the
+  /// metre wherever a slope is formatted.
   @Test("A ratio is symbolised as a ratio, not as a metre")
   func slopeSymbolIsNotAMetre() {
     #expect(UnitSlope.ratio.symbol == "m/m")
@@ -46,8 +46,9 @@ struct CustomUnitTests {
     let rise = Measurement(value: 50, unit: UnitLength.feet)
     let run = Measurement(value: 1000, unit: UnitLength.feet)
 
-    #expect(rise.slope(over: run).converted(to: .percent).value
-      .isApproximatelyEqual(to: 5, absoluteTolerance: 1e-9))
+    let percent = rise.slope(over: run).converted(to: .percent).value
+
+    #expect(percent.isApproximatelyEqual(to: 5, absoluteTolerance: 1e-9))
   }
 
   // MARK: - Density and flow
@@ -75,8 +76,12 @@ struct CustomUnitTests {
   func revolutionsConvert() {
     let rate = Measurement(value: 1, unit: UnitAngularVelocity.revolutionsPerMinute)
 
-    #expect(rate.converted(to: .degreesPerSecond).value.isApproximatelyEqual(
-      to: 6, absoluteTolerance: 1e-12))
+    #expect(
+      rate.converted(to: .degreesPerSecond).value.isApproximatelyEqual(
+        to: 6,
+        absoluteTolerance: 1e-12
+      )
+    )
   }
 
   // MARK: - Force
@@ -85,15 +90,20 @@ struct CustomUnitTests {
   func kilogramForceIsCoherent() {
     let weight = Measurement(value: 1, unit: UnitMass.kilograms) * Measurement.standardGravity
 
-    #expect(weight.converted(to: .kilogramsForce).value
-      .isApproximatelyEqual(to: 1, absoluteTolerance: 1e-12))
+    #expect(
+      weight.converted(to: .kilogramsForce).value
+        .isApproximatelyEqual(to: 1, absoluteTolerance: 1e-12)
+    )
   }
 
   // MARK: - Building a unit that the package does not ship
 
   @Test("A unit of one dimension per another can be built from its components")
   func derivedUnitBuildsFromComponents() {
-    let poundsPerSquareFoot: UnitPressure = derivedUnit(UnitForce.poundsForce, per: UnitArea.squareFeet)
+    let poundsPerSquareFoot: UnitPressure = derivedUnit(
+      UnitForce.poundsForce,
+      per: UnitArea.squareFeet
+    )
     let wingLoading = Measurement(value: 1, unit: poundsPerSquareFoot)
 
     #expect(poundsPerSquareFoot.symbol == "lbf/ft²")

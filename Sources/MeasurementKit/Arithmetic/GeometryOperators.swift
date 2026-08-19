@@ -8,7 +8,8 @@ import Foundation
 ///   - lhs: one side.
 ///   - rhs: the other side.
 /// - Returns: the area.
-public func * (lhs: Measurement<UnitLength>, rhs: Measurement<UnitLength>) -> Measurement<UnitArea> {
+public func * (lhs: Measurement<UnitLength>, rhs: Measurement<UnitLength>) -> Measurement<UnitArea>
+{
   let unit = lhs.unit
   let other = rhs.converted(to: unit).value
   return .init(value: lhs.value * other, unit: unit.areaUnit)

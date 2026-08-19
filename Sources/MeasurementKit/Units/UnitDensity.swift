@@ -52,5 +52,5 @@ public final class UnitDensity: Dimension, ProportionalDimension, DerivedDimensi
     super.init(coder: coder)
   }
 
-  override public class func baseUnit() -> UnitDensity { .kilogramsPerLiter }
+  override public static func baseUnit() -> UnitDensity { .kilogramsPerLiter }
 }
