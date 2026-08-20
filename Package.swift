@@ -102,9 +102,9 @@ let package = Package(
   ],
   products: products,
   dependencies: [
-    .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.4.3"),
-    .package(url: "https://github.com/apple/swift-numerics", from: "1.0.0"),
-    .package(url: "https://github.com/sindresorhus/Defaults", from: "9.0.0")
+    .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.5.0"),
+    .package(url: "https://github.com/apple/swift-numerics", from: "1.1.1"),
+    .package(url: "https://github.com/sindresorhus/Defaults", from: "9.0.9")
   ],
   targets: targets,
   swiftLanguageModes: [.v5, .v6]
