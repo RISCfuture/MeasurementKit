@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  An angle swept per unit time — a rate of turn, or a rotational speed.

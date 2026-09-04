@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 // Except where a companion unit is named, these relations answer in their dimension's base unit —
 // newtons, joules, watts, pascals. Unlike the kinematic units there is no coherent imperial family

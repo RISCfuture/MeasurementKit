@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /// The sine of `angle`.
 public func sin(_ angle: Measurement<UnitAngle>) -> Double { sin(angle.radians) }

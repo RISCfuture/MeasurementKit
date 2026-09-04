@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  A mass flowing per unit time, such as the fuel flow a turbine engine is set by.

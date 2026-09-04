@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  A stable name a unit is stored under.

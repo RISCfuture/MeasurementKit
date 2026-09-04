@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  A measurement stored as its number and the identifier of its unit.

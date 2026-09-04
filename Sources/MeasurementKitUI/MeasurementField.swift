@@ -1,6 +1,6 @@
-import Foundation
+public import Foundation
 import MeasurementKit
-import SwiftUI
+public import SwiftUI
 
 /**
  A text field that edits a measurement, with the unit set beside the digits exactly where the

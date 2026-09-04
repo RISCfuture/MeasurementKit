@@ -1,5 +1,5 @@
 #if canImport(Darwin)
-  import Foundation
+  public import Foundation
 
   extension Measurement where UnitType: Dimension {
     /// The magnitudes to re-probe at when the live value writes no number to read an arrangement

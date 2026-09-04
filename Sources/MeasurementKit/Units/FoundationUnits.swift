@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 extension UnitSpeed {
   /// Feet per minute (ft/min), the unit a vertical speed is flown by.

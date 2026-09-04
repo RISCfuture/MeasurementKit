@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 extension Bearing where Datum == Magnetic {
   /// This bearing restated in true, by adding the local variation.

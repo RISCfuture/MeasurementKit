@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  A dimension whose measurements sit on a proportional scale — one whose zero is a genuine absence

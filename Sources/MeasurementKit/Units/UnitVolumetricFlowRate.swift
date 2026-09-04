@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  A volume flowing per unit time, such as the fuel flow a piston engine is leaned by.

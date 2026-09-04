@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 extension Measurement where UnitType == UnitSlope {
   /// The flight path angle a path at this slope climbs at.

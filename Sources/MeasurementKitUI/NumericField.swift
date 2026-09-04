@@ -1,5 +1,5 @@
-import Foundation
-import SwiftUI
+public import Foundation
+public import SwiftUI
 
 /**
  A text field that edits a bare number, carrying the same entry behavior as ``MeasurementField``

@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  A dimension an app expresses in a single unit everywhere it stores one.

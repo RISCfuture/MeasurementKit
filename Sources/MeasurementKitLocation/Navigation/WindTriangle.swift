@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  The wind triangle: what an aircraft pointed one way and pushed another actually does over the

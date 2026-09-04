@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 extension Measurement where UnitType == UnitAngle {
   /// The angle in radians, as the dimensionless number the trigonometric functions take.

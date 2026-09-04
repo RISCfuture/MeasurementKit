@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  A dimension expressing one quantity per another, such as a density or a flow rate.

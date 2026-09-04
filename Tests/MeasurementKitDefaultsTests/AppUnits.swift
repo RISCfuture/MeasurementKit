@@ -1,5 +1,5 @@
-import Foundation
-import MeasurementKit
+public import Foundation
+public import MeasurementKit
 
 /**
  The conformances an adopting app declares for itself, standing in for one here.
