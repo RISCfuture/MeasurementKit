@@ -4,8 +4,8 @@ import Testing
 
 @testable import MeasurementKitLocation
 
-@Suite("Wind Triangle Tests")
-struct WindTriangleTests {
+@Suite
+struct `Wind Triangle Tests` {
 
   private static let trueAirspeed = Measurement(value: 100, unit: UnitSpeed.knots)
 
@@ -18,16 +18,16 @@ struct WindTriangleTests {
     )
   }
 
-  @Test("Calm air makes good the heading and the true airspeed")
-  func calm() {
+  @Test
+  func `Calm air makes good the heading and the true airspeed`() {
     let triangle = Self.triangle(windFrom: 270, windSpeed: 0)
 
     #expect(triangle.track.degrees.isApproximatelyEqual(to: 0, absoluteTolerance: 1e-9))
     #expect(triangle.groundSpeed.value.isApproximatelyEqual(to: 100, absoluteTolerance: 1e-9))
   }
 
-  @Test("A headwind subtracts from the ground speed and a tailwind adds to it")
-  func alignedWind() {
+  @Test
+  func `A headwind subtracts from the ground speed and a tailwind adds to it`() {
     let headwind = Self.triangle(windFrom: 0, windSpeed: 20)
     #expect(headwind.groundSpeed.value.isApproximatelyEqual(to: 80, absoluteTolerance: 1e-9))
     #expect(headwind.track.degrees.isApproximatelyEqual(to: 0, absoluteTolerance: 1e-9))
@@ -37,8 +37,8 @@ struct WindTriangleTests {
     #expect(tailwind.track.degrees.isApproximatelyEqual(to: 0, absoluteTolerance: 1e-9))
   }
 
-  @Test("A wind from the right drifts the track to the left of the heading")
-  func crosswindDrift() {
+  @Test
+  func `A wind from the right drifts the track to the left of the heading`() {
     let triangle = Self.triangle(windFrom: 90, windSpeed: 20)
 
     #expect(triangle.track.degrees.isApproximatelyEqual(to: 348.6901, absoluteTolerance: 1e-4))
@@ -46,8 +46,8 @@ struct WindTriangleTests {
     #expect(triangle.driftAngle.degrees.isApproximatelyEqual(to: -11.3099, absoluteTolerance: 1e-4))
   }
 
-  @Test("The wind is converted into the true airspeed's unit")
-  func mixedUnits() {
+  @Test
+  func `The wind is converted into the true airspeed's unit`() {
     let triangle = WindTriangle(
       heading: .init(degrees: 0),
       trueAirspeed: Self.trueAirspeed,

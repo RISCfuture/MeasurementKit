@@ -4,21 +4,21 @@ import Testing
 
 @testable import MeasurementKit
 
-@Suite("Custom Unit Tests")
-struct CustomUnitTests {
+@Suite
+struct `Custom Unit Tests` {
 
   // MARK: - Slope
 
   /// The symbol is the SI spelling for a ratio of like quantities. Naming it `m` collides with the
   /// metre wherever a slope is formatted.
-  @Test("A ratio is symbolised as a ratio, not as a metre")
-  func slopeSymbolIsNotAMetre() {
+  @Test
+  func `A ratio is symbolised as a ratio, not as a metre`() {
     #expect(UnitSlope.ratio.symbol == "m/m")
     #expect(UnitSlope.ratio.symbol != UnitLength.meters.symbol)
   }
 
-  @Test("A published climb gradient converts to percent and to an angle")
-  func climbGradientConverts() {
+  @Test
+  func `A published climb gradient converts to percent and to an angle`() {
     let gradient = Measurement(value: 318, unit: UnitSlope.feetPerNauticalMile)
 
     #expect(
@@ -31,8 +31,8 @@ struct CustomUnitTests {
     )
   }
 
-  @Test("An angle and its slope round-trip")
-  func slopeRoundTrips() {
+  @Test
+  func `An angle and its slope round-trip`() {
     let angle = Measurement(value: 3, unit: UnitAngle.degrees)
 
     #expect(
@@ -41,8 +41,8 @@ struct CustomUnitTests {
     )
   }
 
-  @Test("A rise over a run is a slope")
-  func riseOverRun() {
+  @Test
+  func `A rise over a run is a slope`() {
     let rise = Measurement(value: 50, unit: UnitLength.feet)
     let run = Measurement(value: 1000, unit: UnitLength.feet)
 
@@ -56,14 +56,14 @@ struct CustomUnitTests {
   /// Foundation measures mass in kilograms and volume in litres, so the coherent base unit has a
   /// coefficient of exactly one. A base unit that had to be reached by conversion would make every
   /// density relation approximate.
-  @Test("The base density is coherent with Foundation's own base units")
-  func densityBaseIsCoherent() {
+  @Test
+  func `The base density is coherent with Foundation's own base units`() {
     #expect(UnitDensity.baseUnit() == UnitDensity.kilogramsPerLiter)
     #expect(UnitDensity.kilogramsPerLiter.converter.baseUnitValue(fromValue: 1) == 1)
   }
 
-  @Test("A derived unit reports the units it was built from")
-  func derivedUnitsCarryComponents() {
+  @Test
+  func `A derived unit reports the units it was built from`() {
     #expect(UnitDensity.poundsPerGallon.numeratorUnit == .pounds)
     #expect(UnitDensity.poundsPerGallon.denominatorUnit == .gallons)
     #expect(UnitMassFlowRate.poundsPerHour.numeratorUnit == .pounds)
@@ -72,8 +72,8 @@ struct CustomUnitTests {
     #expect(UnitAngularVelocity.degreesPerSecond.numeratorUnit == .degrees)
   }
 
-  @Test("A revolution per minute is six degrees per second")
-  func revolutionsConvert() {
+  @Test
+  func `A revolution per minute is six degrees per second`() {
     let rate = Measurement(value: 1, unit: UnitAngularVelocity.revolutionsPerMinute)
 
     #expect(
@@ -86,8 +86,8 @@ struct CustomUnitTests {
 
   // MARK: - Force
 
-  @Test("A kilogram-force is standard gravity on a kilogram")
-  func kilogramForceIsCoherent() {
+  @Test
+  func `A kilogram-force is standard gravity on a kilogram`() {
     let weight = Measurement(value: 1, unit: UnitMass.kilograms) * Measurement.standardGravity
 
     #expect(
@@ -98,8 +98,8 @@ struct CustomUnitTests {
 
   // MARK: - Building a unit that the package does not ship
 
-  @Test("A unit of one dimension per another can be built from its components")
-  func derivedUnitBuildsFromComponents() {
+  @Test
+  func `A unit of one dimension per another can be built from its components`() {
     let poundsPerSquareFoot: UnitPressure = derivedUnit(
       UnitForce.poundsForce,
       per: UnitArea.squareFeet

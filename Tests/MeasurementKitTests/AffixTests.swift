@@ -4,8 +4,8 @@
 
   @testable import MeasurementKit
 
-  @Suite("Affix Tests")
-  struct AffixTests {
+  @Suite
+  struct `Affix Tests` {
 
     /// The precisions these fields are actually edited at. The failure this API prevents is
     /// invisible at whole numbers and appears at every one of the others.
@@ -32,8 +32,8 @@
      the first and last element of a one-element array are the same substring, so the field renders
      the unit on both sides of the number.
      */
-    @Test("The unit never lands on both sides at once")
-    func unitNeverDuplicates() {
+    @Test
+    func `The unit never lands on both sides at once`() {
       var duplicated: [String] = []
 
       for locale in Self.locales {
@@ -52,8 +52,8 @@
 
     /// The magnitude cascade exists so that a locale writing some magnitudes without a number still
     /// places its unit. An unresolved arrangement renders a field with no unit beside it at all.
-    @Test("Every locale resolves an arrangement at every precision")
-    func everyLocaleResolves() {
+    @Test
+    func `Every locale resolves an arrangement at every precision`() {
       var unresolved: [String] = []
 
       for locale in Self.locales {
@@ -73,8 +73,8 @@
     /// Wherever the locale does write the number, putting it back between the affixes has to
     /// reproduce what the locale wrote — that is what a field showing a unit beside an editable
     /// number is imitating.
-    @Test("Placing the number between the affixes reproduces the written measurement")
-    func affixesReproduceTheWrittenMeasurement() {
+    @Test
+    func `Placing the number between the affixes reproduces the written measurement`() {
       var mismatches: [String] = []
 
       for locale in Self.locales {
@@ -106,8 +106,8 @@
      Probing with a number formatted to a different precision than the style writes finds “30” inside
      “30.06” and hands back the fraction as though it were the unit.
      */
-    @Test("A style with fractional precision is probed at its own precision")
-    func fractionalPrecisionIsHonoured() {
+    @Test
+    func `A style with fractional precision is probed at its own precision`() {
       let format = Measurement<UnitPressure>.FormatStyle.measurement(
         width: .abbreviated,
         usage: .asProvided,
@@ -129,11 +129,11 @@
     /// Arabic writes one foot as “قدم” and two as “قدمان”, neither of which contains a number to read
     /// an arrangement from. The unit still has to land on exactly one side, in the locale's own
     /// script, leaving the field somewhere to show the value.
-    @Test(
-      "A unit written without a number still lands on one side, in the locale's script",
-      arguments: [("ar", 1.0), ("ar_EG", 1.0), ("ar_SA", 2.0)]
-    )
-    func unitWithoutNumberStillPlaced(identifier: String, magnitude: Double) {
+    @Test(arguments: [("ar", 1.0), ("ar_EG", 1.0), ("ar_SA", 2.0)])
+    func `A unit written without a number still lands on one side, in the locale's script`(
+      identifier: String,
+      magnitude: Double
+    ) {
       let locale = Locale(identifier: identifier)
       let length = Measurement(value: magnitude, unit: UnitLength.feet)
 
@@ -150,11 +150,8 @@
 
     /// Sinhala and Swahili write the unit first, so a field that pins it to the trailing edge reads
     /// backwards there.
-    @Test(
-      "The unit leads the number where the locale writes it first",
-      arguments: ["si_LK", "sw_TZ"]
-    )
-    func unitLeadsNumber(identifier: String) {
+    @Test(arguments: ["si_LK", "sw_TZ"])
+    func `The unit leads the number where the locale writes it first`(identifier: String) {
       let length = Measurement(value: 42, unit: UnitLength.feet)
 
       let (prefix, suffix) = length.affixes(
@@ -168,8 +165,8 @@
 
     /// Reading the arrangement from the value being edited, rather than from a fixed dummy, is what
     /// keeps it right in a language that moves or inflects the unit for particular numbers.
-    @Test("The arrangement follows the value where the locale moves the unit")
-    func arrangementFollowsTheValue() {
+    @Test
+    func `The arrangement follows the value where the locale moves the unit`() {
       let locale = Locale(identifier: "he_IL")
       let one = Measurement(value: 1, unit: UnitLength.feet)
       let many = Measurement(value: 42, unit: UnitLength.feet)

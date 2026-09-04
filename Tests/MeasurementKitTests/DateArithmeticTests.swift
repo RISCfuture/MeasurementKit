@@ -4,13 +4,13 @@ import Testing
 
 @testable import MeasurementKit
 
-@Suite("Date Arithmetic Tests")
-struct DateArithmeticTests {
+@Suite
+struct `Date Arithmetic Tests` {
 
   private let epoch = Date(timeIntervalSince1970: 0)
 
-  @Test("The time between two dates is a duration")
-  func elapsedIsADuration() {
+  @Test
+  func `The time between two dates is a duration`() {
     let later = Date(timeIntervalSince1970: 90)
 
     let minutes = later.elapsed(since: epoch).converted(to: .minutes).value
@@ -19,23 +19,23 @@ struct DateArithmeticTests {
     #expect(epoch.elapsed(since: later).value < 0)
   }
 
-  @Test("The time remaining is the elapsed time reversed")
-  func remainingReversesElapsed() {
+  @Test
+  func `The time remaining is the elapsed time reversed`() {
     let later = Date(timeIntervalSince1970: 90)
 
     #expect(epoch.remaining(until: later).value == later.elapsed(since: epoch).value)
   }
 
-  @Test("A date advances and retards by a duration")
-  func datesShiftByADuration() {
+  @Test
+  func `A date advances and retards by a duration`() {
     let lookahead = Measurement(value: 2, unit: UnitDuration.minutes)
 
     #expect((epoch + lookahead).timeIntervalSince1970 == 120)
     #expect((epoch - lookahead).timeIntervalSince1970 == -120)
   }
 
-  @Test("Shifting in place matches shifting by value")
-  func inPlaceShiftMatches() {
+  @Test
+  func `Shifting in place matches shifting by value`() {
     let lookahead = Measurement(value: 30, unit: UnitDuration.seconds)
     var advanced = epoch
     advanced += lookahead
@@ -44,13 +44,13 @@ struct DateArithmeticTests {
   }
 
   /// `Date + TimeInterval` has to keep resolving with the measurement overload in scope.
-  @Test("Foundation's own date arithmetic still resolves")
-  func foundationDateArithmeticSurvives() {
+  @Test
+  func `Foundation's own date arithmetic still resolves`() {
     #expect((epoch + 5.0).timeIntervalSince1970 == 5)
   }
 
-  @Test("A duration measurement bridges to Duration and back")
-  func durationBridges() {
+  @Test
+  func `A duration measurement bridges to Duration and back`() {
     let measurement = Measurement(value: 90, unit: UnitDuration.seconds)
 
     #expect(measurement.timeInterval == 90)

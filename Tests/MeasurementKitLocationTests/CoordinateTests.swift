@@ -5,11 +5,11 @@ import Testing
 
 @testable import MeasurementKitLocation
 
-@Suite("Coordinate Tests")
-struct CoordinateTests {
+@Suite
+struct `Coordinate Tests` {
 
-  @Test("A degree of latitude is a degree of latitude wherever it is measured")
-  func distance() {
+  @Test
+  func `A degree of latitude is a degree of latitude wherever it is measured`() {
     let equator = Coordinate.zero.distance(to: .init(latitude: 1, longitude: 0))
     #expect(
       equator.converted(to: .nauticalMiles).value.isApproximatelyEqual(
@@ -26,8 +26,8 @@ struct CoordinateTests {
     )
   }
 
-  @Test("A degree of longitude shrinks with the cosine of the latitude")
-  func longitudeConverges() {
+  @Test
+  func `A degree of longitude shrinks with the cosine of the latitude`() {
     let equator = Coordinate.zero.distance(to: .init(latitude: 0, longitude: 1))
     let sixtyNorth = Coordinate(latitude: 60, longitude: 0)
       .distance(to: .init(latitude: 60, longitude: 1))
@@ -37,8 +37,8 @@ struct CoordinateTests {
     )
   }
 
-  @Test("initialBearing points at the cardinal it should")
-  func initialBearing() {
+  @Test
+  func `initialBearing points at the cardinal it should`() {
     let origin = Coordinate.zero
 
     #expect(
@@ -61,8 +61,8 @@ struct CoordinateTests {
 
   /// A great circle crosses each meridian at a different angle, so an easterly leg at latitude
   /// leaves north of due east and arrives south of it, symmetrically.
-  @Test("finalBearing differs from the initial bearing away from the equator")
-  func finalBearing() {
+  @Test
+  func `finalBearing differs from the initial bearing away from the equator`() {
     let start = Coordinate(latitude: 60, longitude: 0)
     let end = Coordinate(latitude: 60, longitude: 30)
 
@@ -74,8 +74,8 @@ struct CoordinateTests {
     #expect((90 - initial).isApproximatelyEqual(to: final - 90, absoluteTolerance: 1e-6))
   }
 
-  @Test("offset walks the distance it is given on the bearing it is given")
-  func offset() {
+  @Test
+  func `offset walks the distance it is given on the bearing it is given`() {
     let start = Coordinate.zero
     let sixtyMiles = Measurement(value: 60, unit: UnitLength.nauticalMiles)
 
@@ -88,8 +88,8 @@ struct CoordinateTests {
     #expect(east.longitude.degrees.isApproximatelyEqual(to: 1, absoluteTolerance: 0.01))
   }
 
-  @Test("offset and distance are inverses")
-  func offsetRoundTrip() {
+  @Test
+  func `offset and distance are inverses`() {
     let start = Coordinate(latitude: 37.62, longitude: -122.38)
     let leg = Measurement(value: 250, unit: UnitLength.nauticalMiles)
     let end = start.offset(bearing: .init(degrees: 42), distance: leg)
@@ -104,8 +104,8 @@ struct CoordinateTests {
   /// Two points at 60°N either side of the prime meridian: the great circle between them bulges
   /// poleward, so the halfway point is at 63.43°N. Averaging the latitudes would answer 60°N and
   /// put the route more than two hundred miles south of where it goes.
-  @Test("interpolated follows the great circle, not the latitude and longitude")
-  func interpolatedBulgesPoleward() {
+  @Test
+  func `interpolated follows the great circle, not the latitude and longitude`() {
     let start = Coordinate(latitude: 60, longitude: -30)
     let end = Coordinate(latitude: 60, longitude: 30)
 
@@ -114,8 +114,8 @@ struct CoordinateTests {
     #expect(midpoint.longitude.degrees.isApproximatelyEqual(to: 0, absoluteTolerance: 1e-6))
   }
 
-  @Test("interpolated hits both ends and the point it should in between")
-  func interpolatedEndpoints() {
+  @Test
+  func `interpolated hits both ends and the point it should in between`() {
     let start = Coordinate.zero
     let end = Coordinate(latitude: 0, longitude: 90)
 
@@ -133,14 +133,14 @@ struct CoordinateTests {
     )
   }
 
-  @Test("Interpolating between a point and itself stays put")
-  func interpolatedDegenerate() {
+  @Test
+  func `Interpolating between a point and itself stays put`() {
     let point = Coordinate(latitude: 12, longitude: 34)
     #expect(point.interpolated(to: point, fraction: 0.5) == point)
   }
 
-  @Test("Latitude clamps at the poles and longitude comes back around")
-  func rangeAtInitialization() {
+  @Test
+  func `Latitude clamps at the poles and longitude comes back around`() {
     #expect(
       Coordinate(latitude: 95, longitude: 0).latitude.degrees
         .isApproximatelyEqual(to: 90, absoluteTolerance: 1e-9)
@@ -163,8 +163,8 @@ struct CoordinateTests {
     )
   }
 
-  @Test("Coordinates round trip through JSON as plain degrees")
-  func codable() throws {
+  @Test
+  func `Coordinates round trip through JSON as plain degrees`() throws {
     let coordinate = Coordinate(latitude: 37.62, longitude: -122.38)
     let encoded = try JSONEncoder().encode(coordinate)
     let fields = try #require(try JSONSerialization.jsonObject(with: encoded) as? [String: Double])
