@@ -4,8 +4,8 @@ import Testing
 
 @testable import MeasurementKit
 
-@Suite("Unit Preservation Tests")
-struct UnitPreservationTests {
+@Suite
+struct `Unit Preservation Tests` {
 
   // MARK: - Coherent families
 
@@ -20,8 +20,8 @@ struct UnitPreservationTests {
   /// The invariant the family table exists to hold. Foundation's knot is the truncated 0.514444, so
   /// a product routed through metres arrives at 239.99979 NM instead of 240; staying inside the
   /// family keeps it exact.
-  @Test("One speed held for one duration covers exactly one length, in every family")
-  func familyInvariantHolds() {
+  @Test
+  func `One speed held for one duration covers exactly one length, in every family`() {
     for family in Self.families {
       let covered =
         Measurement(value: 1, unit: family.speed) * Measurement(value: 1, unit: family.duration)
@@ -31,8 +31,8 @@ struct UnitPreservationTests {
     }
   }
 
-  @Test("A speed divided out of a length returns that family's speed unit")
-  func lengthOverDurationStaysInFamily() {
+  @Test
+  func `A speed divided out of a length returns that family's speed unit`() {
     for family in Self.families {
       let speed =
         Measurement(value: 1, unit: family.length) / Measurement(value: 1, unit: family.duration)
@@ -42,8 +42,8 @@ struct UnitPreservationTests {
     }
   }
 
-  @Test("120 knots for two hours is exactly 240 nautical miles")
-  func knotsAreExact() {
+  @Test
+  func `120 knots for two hours is exactly 240 nautical miles`() {
     let covered =
       Measurement(value: 120, unit: UnitSpeed.knots)
       * Measurement(value: 2, unit: UnitDuration.hours)
@@ -56,8 +56,8 @@ struct UnitPreservationTests {
 
   /// A centimetre belongs to no coherent family, so the relation converts into SI rather than
   /// assuming the unit it was handed is part of one.
-  @Test("A unit naming no family converts to SI rather than assuming one")
-  func unfamiliedUnitFallsBackToSI() {
+  @Test
+  func `A unit naming no family converts to SI rather than assuming one`() {
     let speed =
       Measurement(value: 5, unit: UnitLength.centimeters)
       / Measurement(value: 2, unit: UnitDuration.seconds)
@@ -68,8 +68,8 @@ struct UnitPreservationTests {
 
   /// A duration carries no family of its own, so the other operand governs and the two orders agree
   /// in unit as well as in value.
-  @Test("Multiplication by a duration commutes in unit as well as value")
-  func durationDefersToTheOtherOperand() {
+  @Test
+  func `Multiplication by a duration commutes in unit as well as value`() {
     let speed = Measurement(value: 120, unit: UnitSpeed.knots)
     let time = Measurement(value: 30, unit: UnitDuration.minutes)
 
@@ -82,8 +82,8 @@ struct UnitPreservationTests {
 
   /// The relation that would silently answer in kilograms if the density stopped carrying its
   /// component units.
-  @Test("A volume weighed by a density answers in the density's own mass unit")
-  func densityNamesItsMassUnit() {
+  @Test
+  func `A volume weighed by a density answers in the density's own mass unit`() {
     let weight =
       Measurement(value: 100, unit: UnitVolume.gallons)
       * Measurement(value: 6.7, unit: UnitDensity.poundsPerGallon)
@@ -92,8 +92,8 @@ struct UnitPreservationTests {
     #expect(weight.unit == .pounds)
   }
 
-  @Test("A mass divided by a density answers in the density's own volume unit")
-  func densityNamesItsVolumeUnit() {
+  @Test
+  func `A mass divided by a density answers in the density's own volume unit`() {
     let volume =
       Measurement(value: 670, unit: UnitMass.pounds)
       / Measurement(value: 6.7, unit: UnitDensity.poundsPerGallon)
@@ -102,8 +102,8 @@ struct UnitPreservationTests {
     #expect(volume.unit == .gallons)
   }
 
-  @Test("A flow rate run for a duration answers in the flow rate's own volume unit")
-  func flowRateNamesItsVolumeUnit() {
+  @Test
+  func `A flow rate run for a duration answers in the flow rate's own volume unit`() {
     let burned =
       Measurement(value: 20, unit: UnitVolumetricFlowRate.gallonsPerHour)
       * Measurement(value: 3, unit: UnitDuration.hours)
@@ -112,8 +112,8 @@ struct UnitPreservationTests {
     #expect(burned.unit == .gallons)
   }
 
-  @Test("A volume flow carrying a density answers in that density's mass unit per hour")
-  func flowTimesDensityKeepsBothUnits() {
+  @Test
+  func `A volume flow carrying a density answers in that density's mass unit per hour`() {
     let flow =
       Measurement(value: 20, unit: UnitVolumetricFlowRate.gallonsPerHour)
       * Measurement(value: 6.7, unit: UnitDensity.poundsPerGallon)
@@ -123,8 +123,8 @@ struct UnitPreservationTests {
     #expect(flow.unit.denominatorUnit == .hours)
   }
 
-  @Test("An angle swept over a time answers in both operands' own units")
-  func angularVelocityKeepsBothUnits() {
+  @Test
+  func `An angle swept over a time answers in both operands' own units`() {
     let rate =
       Measurement(value: 90, unit: UnitAngle.degrees)
       / Measurement(value: 30, unit: UnitDuration.seconds)
@@ -139,16 +139,16 @@ struct UnitPreservationTests {
   /// Standard gravity is exactly 9.80665 m/s² and pounds-force is derived from Foundation's own
   /// pound, so a mass in pounds weighs the same number of pounds-force. Foundation's own
   /// `UnitAcceleration.gravity` rounds to 9.81 and would break this by a part in three thousand.
-  @Test("A mass in pounds under standard gravity weighs that many pounds-force")
-  func weightMatchesMass() {
+  @Test
+  func `A mass in pounds under standard gravity weighs that many pounds-force`() {
     let weight = Measurement(value: 3550, unit: UnitMass.pounds) * Measurement.standardGravity
 
     #expect(weight.value.isApproximatelyEqual(to: 3550, absoluteTolerance: 1e-9))
     #expect(weight.unit == .poundsForce)
   }
 
-  @Test("A rectangle in feet has its area in square feet")
-  func areaFollowsLengthUnit() {
+  @Test
+  func `A rectangle in feet has its area in square feet`() {
     let area =
       Measurement(value: 10, unit: UnitLength.feet) * Measurement(value: 3, unit: UnitLength.feet)
 
@@ -158,8 +158,8 @@ struct UnitPreservationTests {
 
   /// Every Foundation acceleration is stated per second squared, so the acceleration names the time
   /// unit rather than the speed's family — an acceleration measured in hours would read strangely.
-  @Test("A speed divided by an acceleration answers in seconds")
-  func accelerationNamesSeconds() {
+  @Test
+  func `A speed divided by an acceleration answers in seconds`() {
     let time =
       Measurement(value: 30, unit: UnitSpeed.knots)
       / Measurement(value: 3, unit: UnitAcceleration.knotsPerSecond)

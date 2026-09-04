@@ -5,11 +5,11 @@ import Testing
 
 @testable import MeasurementKitLocation
 
-@Suite("Bearing Tests")
-struct BearingTests {
+@Suite
+struct `Bearing Tests` {
 
-  @Test("Initialization normalizes into [0, 360)")
-  func normalizesAtInitialization() {
+  @Test
+  func `Initialization normalizes into [0, 360)`() {
     #expect(TrueBearing(degrees: 370).degrees.isApproximatelyEqual(to: 10, absoluteTolerance: 1e-9))
     #expect(
       TrueBearing(degrees: -10).degrees.isApproximatelyEqual(to: 350, absoluteTolerance: 1e-9)
@@ -20,8 +20,8 @@ struct BearingTests {
     )
   }
 
-  @Test("Reciprocal is the opposite course in the same datum")
-  func reciprocal() {
+  @Test
+  func `Reciprocal is the opposite course in the same datum`() {
     #expect(
       TrueBearing(degrees: 30).reciprocal.degrees.isApproximatelyEqual(
         to: 210,
@@ -34,8 +34,8 @@ struct BearingTests {
     )
   }
 
-  @Test("shortestTurn picks the shorter direction across the 0/360 wrap")
-  func shortestTurn() {
+  @Test
+  func `shortestTurn picks the shorter direction across the 0/360 wrap`() {
     let north = MagneticBearing(degrees: 350)
     let east = MagneticBearing(degrees: 10)
 
@@ -47,8 +47,8 @@ struct BearingTests {
     )
   }
 
-  @Test("Subtraction answers a signed turn in (-180, 180]")
-  func subtractionIsSigned() {
+  @Test
+  func `Subtraction answers a signed turn in (-180, 180]`() {
     let opposed = TrueBearing(degrees: 180) - TrueBearing(degrees: 0)
     #expect(opposed.degrees.isApproximatelyEqual(to: 180, absoluteTolerance: 1e-9))
 
@@ -59,8 +59,8 @@ struct BearingTests {
     #expect(leftOfNorth.degrees.isApproximatelyEqual(to: -20, absoluteTolerance: 1e-9))
   }
 
-  @Test("Adding a turn stays in the datum and wraps")
-  func addingATurn() {
+  @Test
+  func `Adding a turn stays in the datum and wraps`() {
     let rolledOut = MagneticBearing(degrees: 350) + RelativeBearing(degrees: 20)
     #expect(rolledOut.degrees.isApproximatelyEqual(to: 10, absoluteTolerance: 1e-9))
 
@@ -68,8 +68,8 @@ struct BearingTests {
     #expect(leftTurn.degrees.isApproximatelyEqual(to: 350, absoluteTolerance: 1e-9))
   }
 
-  @Test("toMagnetic and toTrue round trip through a variation")
-  func datumRoundTrip() {
+  @Test
+  func `toMagnetic and toTrue round trip through a variation`() {
     let trueBearing = TrueBearing(degrees: 10)
     let variation = MagneticVariation.east(15)
 
@@ -80,8 +80,8 @@ struct BearingTests {
     #expect(backToTrue.degrees.isApproximatelyEqual(to: 10, absoluteTolerance: 1e-9))
   }
 
-  @Test("A bare angle converts the same way a variation does")
-  func bareAngleVariation() {
+  @Test
+  func `A bare angle converts the same way a variation does`() {
     let variation = Measurement(value: 15, unit: UnitAngle.degrees)
     #expect(
       TrueBearing(degrees: 10).toMagnetic(variation: variation).degrees
@@ -95,8 +95,8 @@ struct BearingTests {
 
   /// True runway headings from nav data, with O22's 16°E variation, must yield the magnetic
   /// headings published on the Jeppesen chart (Rwy 35→354, 17→174, 11→118, 29→298).
-  @Test("O22's published runway headings fall out of a 16 degrees east variation")
-  func publishedRunwayHeadings() {
+  @Test
+  func `O22's published runway headings fall out of a 16 degrees east variation`() {
     let variation = MagneticVariation.east(16)
     let runways: [(trueBearing: Double, published: Double)] = [
       (10, 354), (190, 174), (134, 118), (314, 298)
@@ -110,8 +110,8 @@ struct BearingTests {
     }
   }
 
-  @Test("Westerly variation runs the other way")
-  func westerlyVariation() {
+  @Test
+  func `Westerly variation runs the other way`() {
     let variation = MagneticVariation.west(10)
     #expect(variation.isWesterly)
     #expect(
@@ -120,8 +120,8 @@ struct BearingTests {
     )
   }
 
-  @Test("Encoding carries the datum alongside the angle")
-  func encodesDatum() throws {
+  @Test
+  func `Encoding carries the datum alongside the angle`() throws {
     let encoded = try JSONEncoder().encode(TrueBearing(degrees: 90))
     let fields = try #require(
       try JSONSerialization.jsonObject(with: encoded) as? [String: Any]
@@ -133,8 +133,8 @@ struct BearingTests {
     )
   }
 
-  @Test("Decoding rejects data written in the other datum")
-  func decodingRejectsForeignDatum() throws {
+  @Test
+  func `Decoding rejects data written in the other datum`() throws {
     let encoded = try JSONEncoder().encode(MagneticBearing(degrees: 90))
 
     #expect(throws: DecodingError.self) {
@@ -144,17 +144,17 @@ struct BearingTests {
     #expect(decoded.degrees.isApproximatelyEqual(to: 90, absoluteTolerance: 1e-9))
   }
 
-  @Test("Bearings built from different units compare equal")
-  func unitIndependence() {
+  @Test
+  func `Bearings built from different units compare equal`() {
     #expect(TrueBearing(radians: .pi) == TrueBearing(degrees: 180))
   }
 }
 
-@Suite("Relative Bearing Tests")
-struct RelativeBearingTests {
+@Suite
+struct `Relative Bearing Tests` {
 
-  @Test("A turn normalizes into (-180, 180]")
-  func normalizesAtInitialization() {
+  @Test
+  func `A turn normalizes into (-180, 180]`() {
     #expect(
       RelativeBearing(degrees: 270).degrees.isApproximatelyEqual(to: -90, absoluteTolerance: 1e-9)
     )
@@ -166,16 +166,16 @@ struct RelativeBearingTests {
     )
   }
 
-  @Test("Magnitude drops the direction of the turn")
-  func magnitude() {
+  @Test
+  func `Magnitude drops the direction of the turn`() {
     #expect(
       RelativeBearing(degrees: -45).magnitude.degrees
         .isApproximatelyEqual(to: 45, absoluteTolerance: 1e-9)
     )
   }
 
-  @Test("Negation turns the other way")
-  func negation() {
+  @Test
+  func `Negation turns the other way`() {
     #expect(
       (-RelativeBearing(degrees: 30)).degrees.isApproximatelyEqual(to: -30, absoluteTolerance: 1e-9)
     )

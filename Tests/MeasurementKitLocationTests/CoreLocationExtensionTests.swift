@@ -6,8 +6,8 @@ import Testing
 
 @testable import MeasurementKitLocation
 
-@Suite("Core Location Extension Tests")
-struct CoreLocationExtensionTests {
+@Suite
+struct `Core Location Extension Tests` {
 
   private static func location(
     latitude: Double = 37.62,
@@ -33,8 +33,8 @@ struct CoreLocationExtensionTests {
     )
   }
 
-  @Test("A fix carries its position and altitude across")
-  func positionAndAltitude() {
+  @Test
+  func `A fix carries its position and altitude across`() {
     let location = Self.location()
 
     #expect(
@@ -51,8 +51,8 @@ struct CoreLocationExtensionTests {
     )
   }
 
-  @Test("Readings a fix has are measurements")
-  func availableReadings() throws {
+  @Test
+  func `Readings a fix has are measurements`() throws {
     let location = Self.location()
 
     #expect(
@@ -86,8 +86,8 @@ struct CoreLocationExtensionTests {
   /// Core Location signals "unavailable" with a negative number rather than an optional. Taken at
   /// face value, a speed of −1 m/s dead-reckons the aircraft backwards and a course of −1° points
   /// a degree west of north.
-  @Test("The negative sentinels read as nothing at all")
-  func negativeSentinels() {
+  @Test
+  func `The negative sentinels read as nothing at all`() {
     let location = Self.location(
       horizontalAccuracy: -1,
       verticalAccuracy: -1,
@@ -107,8 +107,8 @@ struct CoreLocationExtensionTests {
 
   /// The boundary the sentinel check gets written wrong at: an aircraft holding short is stopped,
   /// not unmeasured, and a course of north is a course.
-  @Test("Zero is a reading, not a sentinel")
-  func zeroIsAReading() throws {
+  @Test
+  func `Zero is a reading, not a sentinel`() throws {
     let location = Self.location(course: 0, speed: 0)
 
     #expect(
@@ -120,8 +120,8 @@ struct CoreLocationExtensionTests {
     )
   }
 
-  @Test("Coordinates cross into Core Location and back unchanged")
-  func coordinateBridging() {
+  @Test
+  func `Coordinates cross into Core Location and back unchanged`() {
     let coordinate = Coordinate(latitude: 37.62, longitude: -122.38)
     let bridged = CLLocationCoordinate2D(coordinate)
 

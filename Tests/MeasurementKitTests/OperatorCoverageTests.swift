@@ -14,8 +14,8 @@ import Testing
 
  The assertions are deliberately thin. The point of the suite is that it compiles.
  */
-@Suite("Operator Coverage Tests")
-struct OperatorCoverageTests {
+@Suite
+struct `Operator Coverage Tests` {
 
   private let length = Measurement(value: 100, unit: UnitLength.meters)
   private let shorter = Measurement(value: 25, unit: UnitLength.meters)
@@ -41,8 +41,8 @@ struct OperatorCoverageTests {
 
   // MARK: - Kinematics
 
-  @Test("Kinematic relations resolve without annotation")
-  func kinematics() {
+  @Test
+  func `Kinematic relations resolve without annotation`() {
     let derivedSpeed = length / time
     let derivedTime = length / speed
     let coveredForward = speed * time
@@ -62,8 +62,8 @@ struct OperatorCoverageTests {
 
   // MARK: - Geometry
 
-  @Test("Geometric relations resolve without annotation")
-  func geometry() {
+  @Test
+  func `Geometric relations resolve without annotation`() {
     let rectangle = length * shorter
     let side = area / shorter
     let prismForward = area * shorter
@@ -80,8 +80,8 @@ struct OperatorCoverageTests {
 
   // MARK: - Mass, density and flow
 
-  @Test("Material relations resolve without annotation")
-  func material() {
+  @Test
+  func `Material relations resolve without annotation`() {
     let weighedForward = volume * density
     let weighedReverse = density * volume
     let displaced = mass / density
@@ -113,8 +113,8 @@ struct OperatorCoverageTests {
 
   // MARK: - Force, pressure, energy and power
 
-  @Test("Mechanical relations resolve without annotation")
-  func mechanical() {
+  @Test
+  func `Mechanical relations resolve without annotation`() {
     let weightForward = mass * acceleration
     let weightReverse = acceleration * mass
     let imparted = force / mass
@@ -151,8 +151,8 @@ struct OperatorCoverageTests {
 
   // MARK: - Rotation
 
-  @Test("Rotational relations resolve without annotation")
-  func rotation() {
+  @Test
+  func `Rotational relations resolve without annotation`() {
     let rate = angle / time
     let sweptForward = angularVelocity * time
     let sweptReverse = time * angularVelocity
@@ -169,8 +169,8 @@ struct OperatorCoverageTests {
 
   // MARK: - Electrical
 
-  @Test("Electrical relations resolve without annotation")
-  func electrical() {
+  @Test
+  func `Electrical relations resolve without annotation`() {
     let dissipatedForward = potential * current
     let dissipatedReverse = current * potential
     let acrossWhich = power / current
@@ -197,8 +197,8 @@ struct OperatorCoverageTests {
 
   // MARK: - Ratios, beside the cross-dimensional relations that share a left operand
 
-  @Test("Same-dimension ratios resolve beside the relations sharing their left operand")
-  func ratios() {
+  @Test
+  func `Same-dimension ratios resolve beside the relations sharing their left operand`() {
     let lengths = length / shorter
     let speeds = speed / speed
     let areas = area / area
@@ -217,8 +217,8 @@ struct OperatorCoverageTests {
   }
 
   /// Foundation's own arithmetic has to keep resolving with sixty overloads in scope.
-  @Test("Foundation's own measurement operators still resolve")
-  func foundationOperatorsSurvive() {
+  @Test
+  func `Foundation's own measurement operators still resolve`() {
     let scaled = length * 2.0
     let halved = length / 2.0
     let summed = length + shorter

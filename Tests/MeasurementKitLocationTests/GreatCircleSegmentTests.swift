@@ -5,8 +5,8 @@ import Testing
 
 @testable import MeasurementKitLocation
 
-@Suite("Great Circle Segment Tests")
-struct GreatCircleSegmentTests {
+@Suite
+struct `Great Circle Segment Tests` {
 
   /// A degree of longitude on the equator, the course every test in this suite flies.
   private static let course = GreatCircleSegment(
@@ -14,8 +14,8 @@ struct GreatCircleSegmentTests {
     to: .init(latitude: 0, longitude: 1)
   )
 
-  @Test("A segment reports its own length and departure bearing")
-  func lengthAndBearing() {
+  @Test
+  func `A segment reports its own length and departure bearing`() {
     #expect(
       Self.course.length.converted(to: .nauticalMiles).value
         .isApproximatelyEqual(to: 60, absoluteTolerance: 0.1)
@@ -28,8 +28,8 @@ struct GreatCircleSegmentTests {
   /// Flying east along the equator, a position to the south is off the right wing. The sign is the
   /// whole point of the method: a display that gets it backwards steers the pilot further off
   /// course.
-  @Test("Cross-track distance is positive to the right of course")
-  func crossTrackSignConvention() {
+  @Test
+  func `Cross-track distance is positive to the right of course`() {
     let toTheRight = Self.course.crossTrackDistance(to: .init(latitude: -0.1, longitude: 0.5))
     let toTheLeft = Self.course.crossTrackDistance(to: .init(latitude: 0.1, longitude: 0.5))
 
@@ -45,16 +45,16 @@ struct GreatCircleSegmentTests {
     )
   }
 
-  @Test("A position on the course line has no cross-track distance")
-  func onCourse() {
+  @Test
+  func `A position on the course line has no cross-track distance`() {
     let deviation = Self.course.crossTrackDistance(to: .init(latitude: 0, longitude: 0.5))
     #expect(
       deviation.converted(to: .meters).value.isApproximatelyEqual(to: 0, absoluteTolerance: 1e-6)
     )
   }
 
-  @Test("Along-track distance measures progress down the course, and goes negative behind it")
-  func alongTrackDistance() {
+  @Test
+  func `Along-track distance measures progress down the course, and goes negative behind it`() {
     let halfway = Self.course.alongTrackDistance(to: .init(latitude: -0.1, longitude: 0.5))
     #expect(
       halfway.converted(to: .nauticalMiles).value
@@ -68,16 +68,16 @@ struct GreatCircleSegmentTests {
     )
   }
 
-  @Test("The closest point is abeam the position")
-  func closestPoint() {
+  @Test
+  func `The closest point is abeam the position`() {
     let abeam = Self.course.closestPoint(to: .init(latitude: -0.1, longitude: 0.5))
 
     #expect(abeam.latitude.degrees.isApproximatelyEqual(to: 0, absoluteTolerance: 1e-4))
     #expect(abeam.longitude.degrees.isApproximatelyEqual(to: 0.5, absoluteTolerance: 1e-4))
   }
 
-  @Test("The closest point is held to the ends of the segment")
-  func closestPointClampsToSegment() {
+  @Test
+  func `The closest point is held to the ends of the segment`() {
     let behind = Self.course.closestPoint(to: .init(latitude: 0, longitude: -0.5))
     #expect(behind.longitude.degrees.isApproximatelyEqual(to: 0, absoluteTolerance: 1e-6))
 

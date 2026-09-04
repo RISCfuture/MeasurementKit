@@ -3,8 +3,8 @@ import Testing
 
 @testable import MeasurementKitUI
 
-@Suite("Numeric Keypad Tests")
-struct NumericKeypadTests {
+@Suite
+struct `Numeric Keypad Tests` {
 
   /// The number formats these fields are actually edited at, paired with whether a fraction can
   /// be typed into a field using them.
@@ -28,8 +28,8 @@ struct NumericKeypadTests {
    that rounds the fraction away leaves a separator key that can only produce text the field
    discards; one that keeps it and gets no separator key leaves the fraction unreachable.
    */
-  @Test("Fractionality follows the format in every locale")
-  func fractionalityFollowsTheFormat() {
+  @Test
+  func `Fractionality follows the format in every locale`() {
     var wrong: [String] = []
 
     for locale in Self.locales {
@@ -48,8 +48,8 @@ struct NumericKeypadTests {
 
   /// The sign is asked for rather than read, because a negative writes a minus sign whatever the
   /// style's sign strategy says. Whatever fractionality was resolved has to survive being asked.
-  @Test("Asking for negatives signs the keypad without disturbing its fractionality")
-  func negativesSignTheKeypad() {
+  @Test
+  func `Asking for negatives signs the keypad without disturbing its fractionality`() {
     var wrong: [String] = []
 
     for locale in Self.locales {
@@ -68,11 +68,8 @@ struct NumericKeypadTests {
 
   /// A locale writing its own digits still writes its own decimal separator, and the probe has to
   /// find it there rather than looking for a full stop.
-  @Test(
-    "A locale with its own digits resolves",
-    arguments: ["ar_EG", "fa_IR", "my_MM", "bn_IN", "ne_NP"]
-  )
-  func nonArabicDigitsResolve(identifier: String) {
+  @Test(arguments: ["ar_EG", "fa_IR", "my_MM", "bn_IN", "ne_NP"])
+  func `A locale with its own digits resolves`(identifier: String) {
     let locale = Locale(identifier: identifier)
 
     #expect(NumericKeypad.matching(.number, in: locale) == .decimal)

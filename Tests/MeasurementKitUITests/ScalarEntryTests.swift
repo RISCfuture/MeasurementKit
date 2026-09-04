@@ -3,8 +3,8 @@ import Testing
 
 @testable import MeasurementKitUI
 
-@Suite("Scalar Entry Tests")
-struct ScalarEntryTests {
+@Suite
+struct `Scalar Entry Tests` {
 
   /// The precisions these fields are edited at in practice, with a value each format writes
   /// without rounding so a round trip has something to prove.
@@ -19,8 +19,8 @@ struct ScalarEntryTests {
       ("up to two fraction digits", .number.precision(.fractionLength(0...2)), 2.6)
     ]
 
-  @Test("A value survives being written and read back at every precision")
-  func roundTrips() {
+  @Test
+  func `A value survives being written and read back at every precision`() {
     for format in Self.formats {
       let entry = ScalarEntry(format: format.style)
       let text = entry.text(for: format.value)
@@ -31,8 +31,8 @@ struct ScalarEntryTests {
 
   /// The bug the type exists for. A field rewritten from its value on every keystroke loses the
   /// separator the instant it is typed, and the fraction can never be reached.
-  @Test("A separator just typed is not formatted away")
-  func inFlightSeparatorSurvives() {
+  @Test
+  func `A separator just typed is not formatted away`() {
     let entry = ScalarEntry(format: FloatingPointFormatStyle<Double>.number)
     let typed = "29."
 
@@ -42,8 +42,8 @@ struct ScalarEntryTests {
 
   /// Trailing zeros are the same bug one keystroke later: “29.0” is on its way to “29.05”, and
   /// rewriting it to “29” takes the separator away again.
-  @Test("A trailing zero on its way to a hundredth is not formatted away")
-  func inFlightTrailingZeroSurvives() {
+  @Test
+  func `A trailing zero on its way to a hundredth is not formatted away`() {
     let entry = ScalarEntry(format: FloatingPointFormatStyle<Double>.number)
 
     #expect(entry.text(for: 29, whileTyping: "29.0", isEditing: false) == "29.0")
@@ -51,8 +51,8 @@ struct ScalarEntryTests {
 
   /// Text that stops writing the bound value is text somebody else changed the value out from
   /// under, and the field has to catch up with it.
-  @Test("Text that no longer writes the value is rewritten")
-  func staleTextIsRewritten() {
+  @Test
+  func `Text that no longer writes the value is rewritten`() {
     let entry = ScalarEntry(format: FloatingPointFormatStyle<Double>.number)
 
     #expect(entry.text(for: 42, whileTyping: "29.", isEditing: false) == "42")
@@ -68,8 +68,8 @@ struct ScalarEntryTests {
    under a caret that has already moved on, and the next one is read against text nobody typed. A
    fast typist, or a UI test, outruns the round trip every time.
    */
-  @Test("A value lagging a keystroke behind does not rewrite the field being typed into")
-  func laggingValueLeavesTypingAlone() {
+  @Test
+  func `A value lagging a keystroke behind does not rewrite the field being typed into`() {
     let entry = ScalarEntry(format: FloatingPointFormatStyle<Double>.number)
     var text = "3,550"
     var lagging: Double? = 3_550
@@ -87,8 +87,8 @@ struct ScalarEntryTests {
 
   /// The other half of the rule. A field nobody is typing into shows the value, however the value
   /// got there — a unit changed, a calculation ran, another screen wrote the preference.
-  @Test("A value changed while the field is idle is written into it")
-  func idleFieldFollowsTheValue() {
+  @Test
+  func `A value changed while the field is idle is written into it`() {
     let entry = ScalarEntry(format: FloatingPointFormatStyle<Double>.number)
 
     #expect(entry.text(for: 4_550, whileTyping: "3,550", isEditing: false) == "4,550")
@@ -104,16 +104,16 @@ struct ScalarEntryTests {
    The fraction is rounded away rather than truncated, for the reason a stepper over feet rounds:
    turning 2.6 into 2 loses a foot nobody gave away.
    */
-  @Test(
-    "A fraction survives only where the keypad offers the separator to type it with",
-    arguments: [
-      (NumericKeypad.whole, 3_001.0),
-      (.signedWhole, 3_001),
-      (.decimal, 3_000.7),
-      (.signedDecimal, 3_000.7)
-    ]
-  )
-  func fractionSurvivesOnlyOnADecimalKeypad(keypad: NumericKeypad, expected: Double) {
+  @Test(arguments: [
+    (NumericKeypad.whole, 3_001.0),
+    (.signedWhole, 3_001),
+    (.decimal, 3_000.7),
+    (.signedDecimal, 3_000.7)
+  ])
+  func `A fraction survives only where the keypad offers the separator to type it with`(
+    keypad: NumericKeypad,
+    expected: Double
+  ) {
     let entry = ScalarEntry(format: FloatingPointFormatStyle<Double>.number, keypad: keypad)
 
     #expect(entry.value(from: "3000.7") == expected)
@@ -122,15 +122,15 @@ struct ScalarEntryTests {
 
   /// Nothing typed and nothing meant both have to write nothing, or an empty field reads as zero
   /// and a calculation runs on a value nobody gave.
-  @Test("Text writing no number writes nothing", arguments: ["", "-", "abc", " "])
-  func unparsableTextWritesNothing(text: String) {
+  @Test(arguments: ["", "-", "abc", " "])
+  func `Text writing no number writes nothing`(text: String) {
     let entry = ScalarEntry(format: FloatingPointFormatStyle<Double>.number)
 
     #expect(entry.value(from: text) == nil)
   }
 
-  @Test("No value is written as empty text")
-  func noValueIsEmpty() {
+  @Test
+  func `No value is written as empty text`() {
     let entry = ScalarEntry(format: FloatingPointFormatStyle<Double>.number)
 
     #expect(entry.text(for: nil).isEmpty)
@@ -138,8 +138,8 @@ struct ScalarEntryTests {
 
   /// The field's text is written in the locale it is rendered for, and read back in the same one,
   /// so a comma typed into a German field is a decimal separator rather than a thousands mark.
-  @Test("A value round-trips through the locale's own separator")
-  func roundTripsInAnotherLocale() {
+  @Test
+  func `A value round-trips through the locale's own separator`() {
     let entry = ScalarEntry(
       format: FloatingPointFormatStyle<Double>.number.locale(Locale(identifier: "de_DE"))
     )
