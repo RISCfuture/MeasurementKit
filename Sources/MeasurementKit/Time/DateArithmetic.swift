@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 extension Date {
   /// The date `duration` after `date`.

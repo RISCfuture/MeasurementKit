@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /// Constants describing the sphere this module's geodesy is computed on.
 ///

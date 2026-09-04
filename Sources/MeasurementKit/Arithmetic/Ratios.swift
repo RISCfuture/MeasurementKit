@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 // Operators are declared at module scope rather than as static members so that overload resolution
 // sees every relation at once. A static member is looked up on one of the operand types, which is

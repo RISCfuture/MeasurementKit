@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  A difference between two temperatures.

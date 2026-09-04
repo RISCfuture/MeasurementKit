@@ -1,5 +1,5 @@
-import Defaults
-import Foundation
+public import Defaults
+public import Foundation
 import MeasurementKit
 
 /**

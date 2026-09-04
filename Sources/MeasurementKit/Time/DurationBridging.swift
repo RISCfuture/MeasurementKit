@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 extension Measurement where UnitType == UnitDuration {
   /// The equivalent `Duration`, for the `Duration`-based format styles.

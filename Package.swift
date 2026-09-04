@@ -2,9 +2,13 @@
 
 import PackageDescription
 
-let approachableConcurrency: [SwiftSetting] = [
+let upcomingFeatures: [SwiftSetting] = [
   .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-  .enableUpcomingFeature("InferIsolatedConformances")
+  .enableUpcomingFeature("InferIsolatedConformances"),
+  .enableUpcomingFeature("ImmutableWeakCaptures"),
+  .enableUpcomingFeature("MemberImportVisibility"),
+  .enableUpcomingFeature("ExistentialAny"),
+  .enableUpcomingFeature("InternalImportsByDefault")
 ]
 
 // MeasurementKitLocation needs Core Location and MeasurementKitUI needs SwiftUI, neither of which
@@ -20,7 +24,7 @@ var targets: [Target] = [
   .target(
     name: "MeasurementKit",
     dependencies: [.product(name: "Numerics", package: "swift-numerics")],
-    swiftSettings: approachableConcurrency
+    swiftSettings: upcomingFeatures
   ),
   .testTarget(
     name: "MeasurementKitTests",
@@ -28,7 +32,7 @@ var targets: [Target] = [
       "MeasurementKit",
       .product(name: "Numerics", package: "swift-numerics")
     ],
-    swiftSettings: approachableConcurrency
+    swiftSettings: upcomingFeatures
   )
 ]
 
@@ -55,12 +59,12 @@ var targets: [Target] = [
         "MeasurementKit",
         .product(name: "Numerics", package: "swift-numerics")
       ],
-      swiftSettings: approachableConcurrency
+      swiftSettings: upcomingFeatures
     ),
     .target(
       name: "MeasurementKitUI",
       dependencies: ["MeasurementKit"],
-      swiftSettings: approachableConcurrency
+      swiftSettings: upcomingFeatures
     ),
     .target(
       name: "MeasurementKitDefaults",
@@ -68,7 +72,7 @@ var targets: [Target] = [
         "MeasurementKit",
         .product(name: "Defaults", package: "Defaults")
       ],
-      swiftSettings: approachableConcurrency
+      swiftSettings: upcomingFeatures
     ),
     .testTarget(
       name: "MeasurementKitLocationTests",
@@ -76,17 +80,17 @@ var targets: [Target] = [
         "MeasurementKitLocation",
         .product(name: "Numerics", package: "swift-numerics")
       ],
-      swiftSettings: approachableConcurrency
+      swiftSettings: upcomingFeatures
     ),
     .testTarget(
       name: "MeasurementKitUITests",
       dependencies: ["MeasurementKitUI"],
-      swiftSettings: approachableConcurrency
+      swiftSettings: upcomingFeatures
     ),
     .testTarget(
       name: "MeasurementKitDefaultsTests",
       dependencies: ["MeasurementKitDefaults"],
-      swiftSettings: approachableConcurrency
+      swiftSettings: upcomingFeatures
     )
   ]
 #endif

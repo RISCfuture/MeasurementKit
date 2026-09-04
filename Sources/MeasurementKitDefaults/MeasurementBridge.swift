@@ -1,6 +1,6 @@
-import Defaults
-import Foundation
-import MeasurementKit
+public import Defaults
+public import Foundation
+public import MeasurementKit
 
 /**
  Stores a measurement as a bare number in its dimension's canonical unit.

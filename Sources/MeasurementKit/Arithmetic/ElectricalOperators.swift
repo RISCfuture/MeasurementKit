@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 // Ohm's law and electrical power. These answer in their dimension's base unit — watts, volts,
 // amperes, ohms, coulombs — since no coherent non-SI family of electrical units exists.

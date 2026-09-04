@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 /**
  The keys a numeric field needs, chosen from what its number format actually writes rather than

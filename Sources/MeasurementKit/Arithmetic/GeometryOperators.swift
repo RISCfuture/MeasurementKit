@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 // swiftlint:disable static_operator
 
