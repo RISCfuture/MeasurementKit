@@ -13,6 +13,15 @@ let upcomingFeatures: [SwiftSetting] = [
 
 // MeasurementKitLocation needs Core Location and MeasurementKitUI needs SwiftUI, neither of which
 // exists on Linux; the Foundation-only core and its tests build and run everywhere.
+//
+// The three that build on the core are dynamic, so that they link it rather than absorb it. Left
+// to link statically, each copies the core's object code into whatever links it, and an app using
+// two of them registers the core's classes once per product. Two registrations of `UnitSlope` are
+// two distinct classes to the Objective-C runtime, and `Measurement`'s comparison operators trap
+// rather than convert when the units either side come from different ones.
+//
+// The core itself stays automatic: a dynamic library product cannot share a name with the target
+// it vends, and renaming either would break every consumer's `import`.
 var products: [Product] = [
   .library(
     name: "MeasurementKit",
@@ -40,14 +49,17 @@ var targets: [Target] = [
   products += [
     .library(
       name: "MeasurementKitLocation",
+      type: .dynamic,
       targets: ["MeasurementKitLocation"]
     ),
     .library(
       name: "MeasurementKitUI",
+      type: .dynamic,
       targets: ["MeasurementKitUI"]
     ),
     .library(
       name: "MeasurementKitDefaults",
+      type: .dynamic,
       targets: ["MeasurementKitDefaults"]
     )
   ]

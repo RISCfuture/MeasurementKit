@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-09-09
+
+### Changed
+
+- `MeasurementKitLocation`, `MeasurementKitUI` and `MeasurementKitDefaults` are dynamic library
+  products, so each links the core rather than absorbing a copy of it. Consumers that build
+  through Xcode need do nothing; a SwiftPM executable linking one of them now has a dynamic
+  library to find at run time.
+
+### Fixed
+
+- A unit class is registered once per process rather than once per product linked. Linking two
+  products that build on the core — `MeasurementKit` and `MeasurementKitUI`, say — used to give
+  the process two registrations of every class the core declares, and two registrations of
+  `UnitSlope` are two distinct classes to the Objective-C runtime. Comparing a measurement made
+  against one with a measurement made against the other trapped in Foundation with "Attempt to
+  compare measurements with non-equal dimensions" instead of converting.
+
 ## [1.0.0] - 2026-08-19
 
 ### Added
