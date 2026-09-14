@@ -1,11 +1,10 @@
 # CI Matrix Policy
 #
-# Category B (tools-version 6.2 + older macOS):  macos-15 + 6.2, macos-26 + 6.2, macos-26 + 6.3
+# Category B (tools-version 6.2 + older macOS):  macos-15 + 6.2, macos-15 + 6.4, macos-26 + 6.2,
+#                                                macos-26 + 6.3, macos-26 + 6.4
 #
 # tools-version is 6.2 because sindresorhus/Defaults 9.0.9 is, so 6.0 and 6.1 cannot resolve the
 # dependency graph at all and are not testable.
-#
-# When Swift 6.4 ships: add macos-26 + 6.4
 #
 # No Linux job. MeasurementKitUI needs SwiftUI and MeasurementKitLocation needs Core Location,
 # neither of which exists there, and `Measurement.FormatStyle` — which the core's affix recovery is
@@ -34,10 +33,14 @@ jobs:
         include:
           - os: macos-15
             swift: "6.2"
+          - os: macos-15
+            swift: "6.4"
           - os: macos-26
             swift: "6.2"
           - os: macos-26
             swift: "6.3"
+          - os: macos-26
+            swift: "6.4"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
