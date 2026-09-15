@@ -47,6 +47,11 @@ jobs:
       - uses: SwiftyLab/setup-swift@latest
         with:
           swift-version: ${{ matrix.swift }}
+          # setup-swift pins swift.org data to a commit that predates the 6.4.0
+          # release, so the bare 6.4 spec selects a development snapshot. Snapshot
+          # toolchains enable assertions, and Defaults trips a SILGen assertion
+          # (swiftlang/swift#69945) that the release toolchain does not.
+          check-latest: true
       - name: Cache SwiftPM build products
         uses: actions/cache@v6
         with:

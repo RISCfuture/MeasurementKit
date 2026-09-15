@@ -8,7 +8,8 @@ let upcomingFeatures: [SwiftSetting] = [
   .enableUpcomingFeature("ImmutableWeakCaptures"),
   .enableUpcomingFeature("MemberImportVisibility"),
   .enableUpcomingFeature("ExistentialAny"),
-  .enableUpcomingFeature("InternalImportsByDefault")
+  .enableUpcomingFeature("InternalImportsByDefault"),
+  .strictMemorySafety()
 ]
 
 // MeasurementKitLocation needs Core Location and MeasurementKitUI needs SwiftUI, neither of which
