@@ -26,3 +26,8 @@
   under standard gravity weighs that many pounds-force" wrong by a part in a million.
 - Use the exact 9.80665 m/s² for standard gravity, not `UnitAcceleration.gravity`, which
   Foundation rounds to 9.81.
+- Never make the core `MeasurementKit` product dynamic. SwiftPM rejects a dynamic product that
+  shares its target's name, and renaming the product to get around that makes Xcode emit an empty
+  framework and fail to link. Both were tried against a real consumer. The three products that
+  build on the core stay `.dynamic`, and consumers embed them — see "Embedding in an Xcode app" in
+  the README.

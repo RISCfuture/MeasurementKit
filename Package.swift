@@ -21,8 +21,15 @@ let upcomingFeatures: [SwiftSetting] = [
 // two distinct classes to the Objective-C runtime, and `Measurement`'s comparison operators trap
 // rather than convert when the units either side come from different ones.
 //
-// The core itself stays automatic: a dynamic library product cannot share a name with the target
-// it vends, and renaming either would break every consumer's `import`.
+// Xcode builds those three but does not embed them, so a consuming target has to add each one it
+// links to its Embed Frameworks phase. The README says so under "Embedding in an Xcode app".
+//
+// The core itself stays automatic, and the two ways of making it dynamic are both dead ends.
+// Under its own name SwiftPM rejects it outright, because a dynamic library product cannot share a
+// name with the target it vends. Renaming the product to sidestep that leaves the module name
+// alone, but Xcode then writes an empty framework at the product's name while putting the binary
+// in one named for the target, and fails to link. Renaming the target is what would break every
+// consumer's `import`.
 var products: [Product] = [
   .library(
     name: "MeasurementKit",

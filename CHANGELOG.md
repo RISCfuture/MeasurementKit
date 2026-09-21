@@ -10,9 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `MeasurementKitLocation`, `MeasurementKitUI` and `MeasurementKitDefaults` are dynamic library
-  products, so each links the core rather than absorbing a copy of it. Consumers that build
-  through Xcode need do nothing; a SwiftPM executable linking one of them now has a dynamic
-  library to find at run time.
+  products, so each links the core rather than absorbing a copy of it. **An Xcode target that links
+  one of these products must also embed it**, as must any target that embeds a framework of your own
+  which links one. Xcode builds these products without embedding them, so an app that skips this
+  builds without a warning and passes its simulator tests, then dies at launch on a device with
+  `Library not loaded: @rpath/MeasurementKitUI.framework/MeasurementKitUI`. See "Embedding in an
+  Xcode app" in the README. A SwiftPM executable linking one of them now has a dynamic library to
+  find at run time.
 
 ### Fixed
 

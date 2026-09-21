@@ -64,6 +64,37 @@ The package ships four products so a widget or watch app can link only what it n
 | `MeasurementKitUI` | `MeasurementField`, binding projections | SwiftUI |
 | `MeasurementKitDefaults` | `UserDefaults` persistence | sindresorhus/Defaults |
 
+### Embedding in an Xcode app
+
+`MeasurementKitLocation`, `MeasurementKitUI` and `MeasurementKitDefaults` are dynamic library
+products, so that an app linking two of them gets one registration of each unit class instead of
+one per product. Xcode builds them but does not embed them, so **every app target that links one
+must also embed it**: target > General > Frameworks, Libraries, and Embedded Content, set to
+"Embed & Sign".
+
+Do this for every target that reaches one of these products, whether or not it imports them. A
+target that embeds a framework of your own which links `MeasurementKitLocation` needs
+`MeasurementKitLocation` embedded as well, even though nothing in that target mentions
+MeasurementKit.
+
+Do not add `MeasurementKit` itself to an embed phase. Xcode makes the core dynamic on its own and
+embeds it for you; adding it by hand fails the build with `The file "MeasurementKit-product"
+couldn't be opened because there is no such file`.
+
+A missing embed phase stays quiet until the worst moment. The app builds without a warning, and its
+tests pass in the simulator, which can still reach the framework in your Mac's build directory. On
+a device it dies at launch:
+
+```text
+dyld[819]: Library not loaded: @rpath/MeasurementKitUI.framework/MeasurementKitUI
+```
+
+Every SwiftUI preview in that app fails for the same reason, as a `PreviewsInjection` assertion on
+`__debug_blank_executor_main`.
+
+An executable built by SwiftPM rather than by Xcode needs these libraries findable at run time;
+`swift run` arranges that itself.
+
 ## Quick Start
 
 ### Crossing dimensions
