@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- The README carries an Embedding section: which products an Xcode target must
+  embed, the transitive case where a target embeds a framework of its own that
+  links one, why the core must not be added by hand, and the dyld text the
+  failure produces, so a search for that text lands somewhere useful. The 1.1.0
+  entry has been corrected in place — it said consumers building through Xcode
+  need do nothing, which is the opposite of true for any app linking these
+  products, and is what made the breakage expensive to find.
+
+### Security
+
+- Strict memory safety (SE-0458) is enabled across every target, all of which
+  were already clean under it.
+
 ## [1.1.0] - 2026-09-09
 
 ### Changed
