@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- A numeric field raises a Done button in the bar above its keyboard while it
+  is being edited. The number and decimal pads have no Return key, so a field
+  raising one could otherwise only be left by tapping elsewhere or scrolling.
+  It is a plain button, drawn in clear glass; only the focused field offers it.
+  Its "Done" label is looked up in the app's own string catalog, like the labels
+  an app passes its fields. `NumericKeypad.doneButtonIdentifier` names it for UI
+  tests.
+
 ### Changed
 
 - The README carries an Embedding section: which products an Xcode target must
