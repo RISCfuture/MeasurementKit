@@ -57,6 +57,7 @@ struct NumericTextField: View {
         .numericKeypad(keypad)
         .multilineTextAlignment(.trailing)
         .accessibilityLabel(Text(label))
+        .doneButton(ending: $isEditing)
     #endif
   }
 
@@ -97,7 +98,44 @@ struct NumericTextField: View {
   }
 #endif
 
+extension NumericKeypad {
+  /// The accessibility identifier of the Done button above a numeric field's keyboard, for a UI test
+  /// to end editing through the same control a person would.
+  public static let doneButtonIdentifier = "MeasurementKit.NumericField.done"
+}
+
 extension View {
+  /// Puts a Done button above the keyboard while the field is being edited.
+  ///
+  /// The number and decimal pads have no key of their own to end editing, so without it a field
+  /// raising one can only be left by tapping elsewhere or scrolling. Signed values raise a keyboard
+  /// that does have a Return key, and carry the button anyway, so every numeric field is left the
+  /// same way.
+  ///
+  /// Only the field holding focus offers one. Every field in a form adds to the same bar above the
+  /// keyboard, and a button from each would stack up there.
+  ///
+  /// It is a plain button, which the keyboard bar draws in clear glass. The confirming role would
+  /// bring a translated label with it, but the bar draws a confirming button as a large tinted
+  /// checkmark, and offers no way to draw it plainly. The label is looked up in the app's own
+  /// string catalog, the same way as the labels an app passes its fields, so an app that localizes
+  /// translates "Done" alongside its own strings.
+  func doneButton(ending isEditing: FocusState<Bool>.Binding) -> some View {
+    #if os(iOS)
+      toolbar {
+        ToolbarItemGroup(placement: .keyboard) {
+          if isEditing.wrappedValue {
+            Spacer()
+            Button("Done") { isEditing.wrappedValue = false }
+              .accessibilityIdentifier(NumericKeypad.doneButtonIdentifier)
+          }
+        }
+      }
+    #else
+      self
+    #endif
+  }
+
   /// Raises the keyboard offering `keypad`'s keys, on the platforms that have a choice of
   /// keyboard to raise. Elsewhere the keypad is inert, so a cross-platform call site names it
   /// once and compiles everywhere.
