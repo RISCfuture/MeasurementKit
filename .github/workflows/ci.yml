@@ -6,10 +6,10 @@
 # tools-version is 6.2 because sindresorhus/Defaults 9.0.9 is, so 6.0 and 6.1 cannot resolve the
 # dependency graph at all and are not testable.
 #
-# No Linux job. MeasurementKitUI needs SwiftUI and MeasurementKitLocation needs Core Location,
-# neither of which exists there, and `Measurement.FormatStyle` — which the core's affix recovery is
-# built on — is not implemented by swift-corelibs-foundation. Package.swift still defines the
-# Foundation-only core on Linux, so a Linux consumer gets it; it is simply not covered here.
+# Linux: the Foundation-only core, in a swift:6.4 container. Package.swift defines only the core
+# there: MeasurementKitUI needs SwiftUI and MeasurementKitLocation needs Core Location, neither of
+# which exists on Linux, and `Measurement.FormatStyle`, which the core's affix recovery is built
+# on, is not implemented by swift-corelibs-foundation.
 
 name: CI
 
@@ -55,6 +55,17 @@ jobs:
             ~/.cache/org.swift.swiftpm
             ~/Library/Caches/org.swift.swiftpm
           key: swiftpm-test-${{ matrix.os }}-swift${{ matrix.swift }}-${{ hashFiles('Package.resolved') }}
+      - name: Build
+        run: swift build -v
+      - name: Test
+        run: swift test -v
+  tests-linux:
+    name: Build and Test (Linux)
+    runs-on: ubuntu-latest
+    container:
+      image: swift:6.4
+    steps:
+      - uses: actions/checkout@v7.0.1
       - name: Build
         run: swift build -v
       - name: Test

@@ -48,6 +48,14 @@ public final class UnitVolumetricFlowRate: Dimension, ProportionalDimension, Der
     super.init(symbol: symbol, converter: converter)
   }
 
+  #if !canImport(Darwin)
+    public required init(symbol: String) {
+      numeratorUnit = .baseUnit()
+      denominatorUnit = .baseUnit()
+      super.init(symbol: symbol)
+    }
+  #endif
+
   public required init?(coder: NSCoder) {
     numeratorUnit = .baseUnit()
     denominatorUnit = .baseUnit()
