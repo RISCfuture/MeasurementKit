@@ -25,6 +25,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  route:
+    uses: RISCfuture/ci-workflows/.github/workflows/minerva-route.yml@1.1.0
+    permissions:
+      contents: read
   tests:
     name: Build and Test
     strategy:
@@ -41,7 +45,9 @@ jobs:
             swift: "6.3"
           - os: macos-26
             swift: "6.4"
-    runs-on: ${{ matrix.os }}
+    # setup-swift needs sudo for Swift 6.2 and 6.3, so only the 6.4 legs run on Minerva.
+    needs: route
+    runs-on: ${{ (matrix.os == 'macos-26' || matrix.os == 'macos-latest') && (matrix.swift == '6.4' || matrix.swift == '6.4.2') && fromJSON(needs.route.outputs[matrix.os]) || matrix.os }}
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: SwiftyLab/setup-swift@v1.14.2
@@ -96,7 +102,8 @@ jobs:
     # macOS, not Linux: MeasurementKitLocation, MeasurementKitUI and
     # MeasurementKitDefaults need Core Location, SwiftUI and a platform Package.swift
     # defines them on, none of which exist there.
-    runs-on: macos-latest
+    needs: route
+    runs-on: ${{ fromJSON(needs.route.outputs.macos-latest) }}
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: SwiftyLab/setup-swift@v1.14.2
